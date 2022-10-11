@@ -1,4 +1,6 @@
 #pragma once
 
-class IComponent
-{};
+struct Component
+{
+	virtual ~Component() = default;
+};
