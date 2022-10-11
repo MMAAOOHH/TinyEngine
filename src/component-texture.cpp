@@ -1,29 +1,35 @@
-#include "texture.h"
+#include "component-texture.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <iostream>
 
-Texture::Texture(GLuint internal_format, GLuint image_format, GLuint wrap_s, GLuint wrap_t, GLuint filter_min, GLuint filter_mag)
-	: width(0), height(0), internal_format(internal_format), image_format(image_format), wrap_s(wrap_s), wrap_t(wrap_t), filter_min(filter_min),
-	filter_mag(filter_mag)
+
+Component::Texture::Texture(GLuint internal_format, GLuint image_format, GLuint wrap_s, GLuint wrap_t,
+                            GLuint filter_min, GLuint filter_mag)
+	: width(0), height(0), internal_format(internal_format), image_format(image_format), wrap_s(wrap_s), wrap_t(wrap_t),
+	  filter_min(filter_min),
+	  filter_mag(filter_mag)
 {
 	glGenTextures(1, &id_);
 }
 
-Texture::Texture(GLuint format)
+Component::Texture::Texture(GLuint format)
 	: Texture(format, format, GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST)
-{}
+{
+}
 
-Texture::Texture()
+Component::Texture::Texture()
 	: Texture(GL_RGBA, GL_RGBA, GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST)
-{}
+{
+}
 
-Texture::~Texture()
+Component::Texture::~Texture()
 {
 	glDeleteTextures(1, &id_);
 }
 
-void Texture::load(const GLchar* tex_file_name)
+void Component::Texture::load(const GLchar* tex_file_name)
 {
 	// Load image
 	int width, height, nr_channels;
@@ -52,7 +58,8 @@ void Texture::load(const GLchar* tex_file_name)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->filter_mag);
 
 	// Create Texture
-	glTexImage2D(GL_TEXTURE_2D, 0, this->internal_format, this->width, this->height, 0, this->image_format, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, this->internal_format, this->width, this->height, 0, this->image_format,
+	             GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Unbind texture
@@ -62,9 +69,9 @@ void Texture::load(const GLchar* tex_file_name)
 	stbi_image_free(image);
 }
 
-void Texture::bind()
+void Component::Texture::bind()
 {
 	// activate tex slot then bind the texture to active tex slot
-	
+
 	glBindTexture(GL_TEXTURE_2D, id_);
 }

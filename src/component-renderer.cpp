@@ -1,6 +1,6 @@
-#include "Renderer.h"
+#include "component-renderer.h"
 
-Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
+Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
 	: vbo_(0), vao_(0), max_sprites_(max_sprites)
 {
 	attrib_size_ = 0;
@@ -27,7 +27,7 @@ Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
 }
 
 
-Renderer::~Renderer()
+Component::Renderer::~Renderer()
 {
 	if (vbo_)
         glDeleteBuffers(1, &vbo_);
@@ -38,17 +38,17 @@ Renderer::~Renderer()
     vao_ = 0;
 }
 
-void Renderer::begin()
+void Component::Renderer::begin()
 {
 	current_material_ = nullptr;
 }
 
-void Renderer::end()
+void Component::Renderer::end()
 {
 	flush();
 }
 
-void Renderer::draw(Rect dest_rect, Rect src_rect, Material& material)
+void Component::Renderer::draw(Rect dest_rect, Rect src_rect, Material& material)
 {
 
 	// 
@@ -103,7 +103,7 @@ void Renderer::draw(Rect dest_rect, Rect src_rect, Material& material)
 
 }
 
-void Renderer::flush()
+void Component::Renderer::flush()
 {
 	if (this->buffer_.empty()) return;
 

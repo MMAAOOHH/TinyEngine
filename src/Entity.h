@@ -18,7 +18,7 @@ inline component_id get_new_component_type_id()
 template <typename T> inline component_id get_component_type_id() noexcept
 {
 	// assert that it inherits Comp
-	static_assert (std::is_base_of<Component, T>::value, "");
+	static_assert (std::is_base_of<IComponent, T>::value, "");
 	static component_id type_id = get_new_component_type_id();
 	return type_id;
 }
@@ -27,7 +27,7 @@ template <typename T> inline component_id get_component_type_id() noexcept
 class Entity
 {
 private:
-	SplayTree<Component> components_;
+	SplayTree<IComponent> components_;
 	SplayTree<Entity> children_;
 public:
 	Entity()
@@ -107,7 +107,7 @@ public:
 	}
 
 	// gets array of components
-	std::vector<Component*> get_component_list()
+	std::vector<IComponent*> get_component_list()
 	{
 		return components_.get_ordered_list();
 	}

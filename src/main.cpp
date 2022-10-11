@@ -4,9 +4,9 @@
 #include <glfw3.h>
 #include <fstream>
 #include <sstream>
-#include "Shader.h"
-#include "Texture.h"
-#include "Renderer.h"
+#include "component-shader.h"
+#include "component-texture.h"
+#include "component-renderer.h"
 #include <glm/ext/matrix_clip_space.hpp>
 
 const GLuint SCR_WIDTH  = 800;
@@ -63,13 +63,13 @@ int main()
 	auto vs_file_name = "res/Shaders/sprite.vs";
 	auto fs_file_name = "res/Shaders/sprite.fs";
 
-    auto shader = Shader();
+    auto shader = Component::Shader();
     shader.load(vs_file_name, fs_file_name);
 
     // load in used textures
     auto tex_file_name = "res/Images/testtexture.png";
 
-    auto texture = Texture();
+    auto texture = Component::Texture();
     texture.load(tex_file_name);
 
     // use program for drawing
@@ -79,11 +79,11 @@ int main()
     shader.set_mat4("projection", projection);
 
     // material
-    auto material = Material(texture, shader, 0);
+    auto material = Component::Material(texture, shader, 0);
 
     // create a renderer object and input appropriate attribute sizes and max amount of sprites on screen at once
     // 2 = pos, 2 = coords
-    auto renderer = Renderer({ 2, 2 }, 255);
+    auto renderer = Component::Renderer({ 2, 2 }, 255);
 
 
     // Main loop
