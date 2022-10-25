@@ -3,8 +3,6 @@
 #include "Keyboard.h"
 
 
-void process_input(GLFWwindow* window);
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 
@@ -18,6 +16,12 @@ Window::~Window()
 {
 	glfwDestroyWindow(window_);
 	glfwTerminate();
+}
+
+void Window::clear()
+{
+	glClearColor(bg_color_.r, bg_color_.g, bg_color_.b, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Window::init(const char* name, GLuint width, GLuint height)
@@ -38,10 +42,10 @@ void Window::init(const char* name, GLuint width, GLuint height)
 	glfwSwapInterval(2);
 
 	// normalize window to work on other devices
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, width, height);
 
 	// Configure OpenGL
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//glEnable(GL_DEPTH_TEST); Hides my sprite, why?
 

@@ -20,7 +20,7 @@ namespace Component
 
 		void begin();
 		void end();
-		void draw(Rect dest_rect, Rect src_rect, Material& material);
+		void draw(rect dest_rect, rect src_rect, Material& material);
 		void flush();
 	};
 }

@@ -2,6 +2,8 @@
 #include <bitset>
 #include <glad/glad.h>
 #include <glfw3.h>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 class Window
 {
@@ -10,6 +12,7 @@ public:
 	Window(const char* name, GLuint width, GLuint height);
 	~Window();
 
+	void clear();
 	void update();
 	void process_events();
 	bool is_open();
@@ -23,5 +26,5 @@ private:
 
 	const char* name_;
 	GLuint width_, height_;
-
+	glm::vec3 bg_color_ = { 0.1f,0.1f,0.3f };
 };

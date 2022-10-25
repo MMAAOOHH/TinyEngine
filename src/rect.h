@@ -1,7 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 
-struct Rect
+struct rect
 {
     GLfloat x, y, w, h;
 };

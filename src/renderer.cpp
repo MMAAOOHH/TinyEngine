@@ -1,7 +1,5 @@
 #include "renderer.h"
 
-struct Rect;
-
 Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
 	: vbo_(0), vao_(0), current_material_(nullptr), max_sprites_(max_sprites)
 {
@@ -49,7 +47,7 @@ void Component::Renderer::end()
 	flush();
 }
 
-void Component::Renderer::draw(Rect dest_rect, Rect src_rect, Material& material)
+void Component::Renderer::draw(rect dest_rect, rect src_rect, Material& material)
 {
 
 	// 
