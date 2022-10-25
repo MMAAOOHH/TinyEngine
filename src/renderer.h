@@ -2,11 +2,8 @@
 
 #include <glad/glad.h>
 #include <vector>
-#include <glm/vec4.hpp>
-#include "component-material.h"
-
-
-#define Rect glm::vec4
+#include "material.h"
+#include "rect.h"
 
 namespace Component
 {
@@ -25,6 +22,5 @@ namespace Component
 		void end();
 		void draw(Rect dest_rect, Rect src_rect, Material& material);
 		void flush();
-
 	};
 }

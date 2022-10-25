@@ -143,28 +143,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\component-material.cpp" />
-    <ClCompile Include="src\component-renderer.cpp" />
-    <ClCompile Include="src\component-shader.cpp" />
-    <ClCompile Include="src\component-texture.cpp" />
+    <ClCompile Include="src\material.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\Mouse.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\Shaders\circle.fs" />
     <None Include="res\Shaders\default.frag" />
     <None Include="res\Shaders\default.vert" />
     <None Include="res\Shaders\sprite.fs" />
     <None Include="res\Shaders\sprite.vs" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Component.h" />
-    <ClInclude Include="src\Entity.h" />
-    <ClInclude Include="src\component-material.h" />
+    <ClInclude Include="src\material.h" />
+    <ClInclude Include="src\Keyboard.h" />
+    <ClInclude Include="src\Mouse.h" />
     <ClInclude Include="src\rect.h" />
-    <ClInclude Include="src\component-renderer.h" />
-    <ClInclude Include="src\component-shader.h" />
-    <ClInclude Include="src\Splay_tree.h" />
+    <ClInclude Include="src\renderer.h" />
+    <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\stb_image.h" />
-    <ClInclude Include="src\component-texture.h" />
+    <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

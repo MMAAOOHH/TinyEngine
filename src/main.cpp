@@ -4,59 +4,41 @@
 #include <glfw3.h>
 #include <fstream>
 #include <sstream>
-#include "component-shader.h"
-#include "component-texture.h"
-#include "component-renderer.h"
+#include "shader.h"
+#include "texture.h"
+#include "renderer.h"
 #include <glm/ext/matrix_clip_space.hpp>
+#include "Window.h"
+#include "Mouse.h"
+#include "Keyboard.h"
+#include "rect.h"
 
 const GLuint SCR_WIDTH  = 800;
 const GLuint SCR_HEIGHT = 600;
 const char* NAME = "TinyEngine";
 
-void process_input(GLFWwindow* window);
+void process_input();
+
+
+
 Rect dest = { 400 - 32, 300 - 32, 64, 64 };
-Rect src = { 0,0,1,1 };
+Rect src = { 0,0,64,64 };
+
+
 constexpr auto SPEED = 4.0f;
+
+glm::mat4 mouse_transform = glm::mat4(1.0f);
+
+
+struct Player
+{
+    Rect rect;
+    Component::Material* mat;
+};
 
 int main()
 {
-	if(!glfwInit())
-	{
-		std::cerr << "Glfw failed to init!" << std::endl;
-		return -1;
-	}
-
-	// Initialize GLFW
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	// Create window and get reference
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, NAME, nullptr, nullptr);
-    if (window == nullptr)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-	glfwMakeContextCurrent(window);
-
-	// Initialize GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cerr << "GLAD failed to init!" << std::endl;
-		return -1;
-	}
-
-    // normalize window to work on other devices
-    glViewport(0, 0, 800, 600);
-
-    // set up alpha channel to display images beneath it.
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    Window window(NAME, SCR_WIDTH, SCR_HEIGHT);
 
 	// Load from shader files
 	// ----------------------
@@ -66,13 +48,12 @@ int main()
     auto shader = Component::Shader();
     shader.load(vs_file_name, fs_file_name);
 
-    // load in used textures
+    // load in texture
     auto tex_file_name = "res/Images/testtexture.png";
 
     auto texture = Component::Texture();
     texture.load(tex_file_name);
 
-    // use program for drawing
     shader.use();
     // set up 2d camera
     auto projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
@@ -81,49 +62,39 @@ int main()
     // material
     auto material = Component::Material(texture, shader, 0);
 
-    // create a renderer object and input appropriate attribute sizes and max amount of sprites on screen at once
-    // 2 = pos, 2 = coords
-    auto renderer = Component::Renderer({ 2, 2 }, 255);
 
+    auto* renderer = new Component::Renderer({ 2, 2 }, 255);
+    auto* player = new Player();
+
+    player->rect = { SCR_WIDTH / 2 - 32, SCR_HEIGHT / 2 - 32, 64, 64 };
+    player->mat = &material;
 
     // Main loop
-    while (!glfwWindowShouldClose(window))
+    while (window.is_open())
     {
-        process_input(window);
+        window.process_events();
+        process_input();
 
-        // clear screen to red
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(.1f, .1f, .1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw rects
-        renderer.draw(dest, src, material);
-
-        // flush draw calls
-        renderer.flush();
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-
-        // exit on escape key press
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, GL_TRUE);
+        renderer->draw(player->rect, player->rect, *player->mat);
+        renderer->end();
+        window.update();
     }
-
-    glfwTerminate();
-
     return 0;
 }
 
-void process_input(GLFWwindow* window)
+
+void process_input()
 {
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    if (Keyboard::key(GLFW_KEY_UP))
         dest.y -= SPEED;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    if (Keyboard::key(GLFW_KEY_DOWN))
         dest.y += SPEED;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    if (Keyboard::key(GLFW_KEY_RIGHT))
         dest.x += SPEED;
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    if (Keyboard::key(GLFW_KEY_LEFT))
         dest.x -= SPEED;
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
 }

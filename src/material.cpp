@@ -1,6 +1,7 @@
-#include "component-material.h"
+#include "material.h"
 
 GLuint Component::Material::id_gen = 0;
+
 void Component::Material::compile()
 {
 	shader.use();

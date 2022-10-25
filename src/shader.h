@@ -6,11 +6,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/matrix.hpp>
-#include "Component.h"
 
 namespace Component
 {
-	class Shader : public IComponent
+	class Shader
 	{
 		GLuint id_;
 		std::string vs_file_name_, fs_file_name_;

@@ -1,11 +1,10 @@
 #pragma once
 #include <glad/glad.h>
 #include <string>
-#include "Component.h"
 
 namespace Component
 {
-	class Texture : public IComponent
+	class Texture
 	{
 		GLuint id_;
 	public:

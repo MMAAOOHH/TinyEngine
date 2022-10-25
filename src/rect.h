@@ -1,6 +1,7 @@
 #pragma once
+#include <glad/glad.h>
 
 struct Rect
 {
-	float x, y, w, h;
+    GLfloat x, y, w, h;
 };

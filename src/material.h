@@ -1,13 +1,12 @@
 #pragma once
 
 #include "glad/glad.h"
-#include "Component.h"
-#include "component-shader.h"
-#include "component-texture.h"
+#include "shader.h"
+#include "texture.h"
 
 namespace Component
 {
-	class Material : public IComponent
+	class Material
 	{
 		static GLuint id_gen;
 		GLuint tex_unit_;
