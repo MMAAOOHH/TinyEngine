@@ -52,6 +52,10 @@
     <None Include="res\Shaders\sprite.fs" />
     <None Include="res\Shaders\sprite.vs" />
     <None Include="res\Shaders\circle.fs" />
+    <None Include="res\Shaders\newcircle.fs" />
+    <None Include="res\Shaders\ghost.fs" />
+    <None Include="res\Shaders\wobbler.fs" />
+    <None Include="res\Shaders\testing.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shader.h">

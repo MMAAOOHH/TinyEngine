@@ -22,7 +22,7 @@ void Component::Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
     if (!success)
     {
         glGetShaderInfoLog(vs, 512, nullptr, info_log);
-        std::cerr << "Vertex shader compilation failure: vs = " << vs_file_name_ << std::endl;
+        std::cerr << "Vertex shader failed to compile: vs = " << vs_file_name_ << std::endl;
         throw;
     }
 
@@ -36,7 +36,7 @@ void Component::Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
     if (!success)
     {
         glGetShaderInfoLog(fs, 512, nullptr, info_log);
-        std::cerr << "Fragment shader compilation failure: fs = " << fs_file_name_ << std::endl;
+        std::cerr << "Fragment shader failed to compile: fs = " << fs_file_name_ << std::endl;
     }
 
     // shader program init
@@ -50,7 +50,7 @@ void Component::Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
     if (!success)
     {
         glGetProgramInfoLog(id_, 512, nullptr, info_log);
-        std::cerr << "Program linking failure: vs = " << vs_file_name_ << "fs = " << fs_file_name_ << std::endl;
+        std::cerr << "Shader program linking failure: vs = " << vs_file_name_ << "fs = " << fs_file_name_ << std::endl;
         throw;
     }
 

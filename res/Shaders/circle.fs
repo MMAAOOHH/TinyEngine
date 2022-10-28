@@ -1,32 +1,27 @@
 #version 330 core
+
 in vec2 TexCoords;
 out vec4 color;
 
+uniform vec2 u_resolution;
+uniform vec3 u_color;
 uniform sampler2D image;
-uniform vec3 spriteColor;
+uniform float u_time;
 
-uniform float windowHeight;
-uniform float radius;
-uniform float smoothUni;
+vec4 circle(vec2 uv)
+{
+    vec4 col = vec4(1);
+    float d = length(uv);
+    col.a = smoothstep(0.5, 0.49, d);
+    return col;
+}
 
 void main()
-{   
-    vec2 uv = TexCoords;
+{
+	vec2 uv = TexCoords.xy / u_resolution.xy;
     uv -= 0.5;
+    uv.x *= u_resolution.x / u_resolution.y;
+ 
+  color = circle(uv)  * vec4(u_color, 1.0) * texture(image, uv) * vec4(uv.x, uv.y, 1.0, 1.0);
 
-    float val0 = smoothUni * 0.1;
-    float val1 = smoothUni * 0.02;
-    float val2 = smoothUni * 0.008;
-    float val3 = smoothUni * 0.002;
-
-    float percentage = radius / windowHeight;
-    float smoothness;
-    if (percentage > 1.0) smoothness = val3;
-    else if (percentage > 0.5) smoothness = mix(val2, val3, (percentage-0.5) / 0.5);
-    else if (percentage > 0.1) smoothness = mix(val1, val2, (percentage-0.1) / 0.4);
-    else smoothness = mix(val0, val1, percentage / 0.1);
-
-    float d = smoothstep(0.5, 0.5-smoothness, length(uv));
-    
-    color = vec4(spriteColor, d) * texture(image, TexCoords);
 }

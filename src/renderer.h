@@ -5,6 +5,8 @@
 #include "material.h"
 #include "rect.h"
 
+struct drawable;
+
 namespace Component
 {
 	class Renderer
@@ -20,7 +22,7 @@ namespace Component
 
 		void begin();
 		void end();
-		void draw(rect dest_rect, rect src_rect, Material& material);
+		void draw(drawable& drawable_struct);
 		void flush();
 	};
 }

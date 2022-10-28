@@ -18,7 +18,7 @@ Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites
     auto stride = 0ull;
     for (auto i = 0ull; i < attributes.size(); ++i)
     {
-        // set up attributes to decipher vbo in gpu
+        // set up attributes to map vbo in gpu
         glVertexAttribPointer(i, attributes[i], GL_FLOAT, GL_FALSE, attrib_size_ * sizeof(GLfloat), (GLvoid*)stride);
         glEnableVertexAttribArray(i);
         stride += sizeof(GLfloat) * attributes[i];
@@ -47,16 +47,21 @@ void Component::Renderer::end()
 	flush();
 }
 
-void Component::Renderer::draw(rect dest_rect, rect src_rect, Material& material)
+void Component::Renderer::draw(drawable& drawable_struct)
 {
+	rect dest_rect = { drawable_struct.position.x, drawable_struct.position.y , drawable_struct.size.x, drawable_struct.size.y };
+	// handle texture rect some other way?
+	rect src_rect = { 0,0, drawable_struct.size.x, drawable_struct.size.y };
+	auto material = *drawable_struct.material;
 
-	// 
+
 	if((this->buffer_.size() >= this->max_sprites_ * 6 * this->attrib_size_ || !current_material_) ||
 		this->current_material_->id != material.id)
 	{
 		this->flush();
 		this->current_material_ = &material;
 	}
+
 	// translate src to fractions of the image dimensions
 	auto norm_src = src_rect;
 	auto img_w = material.texture.width;
@@ -72,18 +77,21 @@ void Component::Renderer::draw(rect dest_rect, rect src_rect, Material& material
 	// bot left
 	buffer_.push_back(dest_rect.x);
 	buffer_.push_back(dest_rect.y + dest_rect.h);
+	// texture
 	buffer_.push_back(norm_src.x);
 	buffer_.push_back(norm_src.y + norm_src.h);
 
 	// top right
 	buffer_.push_back(dest_rect.x + dest_rect.w);
 	buffer_.push_back(dest_rect.y);
+	// texture
 	buffer_.push_back(norm_src.x + norm_src.w);
 	buffer_.push_back(norm_src.y);
 
 	// top left
 	buffer_.push_back(dest_rect.x);
 	buffer_.push_back(dest_rect.y);
+	// texture
 	buffer_.push_back(norm_src.x);
 	buffer_.push_back(norm_src.y);
 
@@ -92,21 +100,27 @@ void Component::Renderer::draw(rect dest_rect, rect src_rect, Material& material
 	// bot left
 	buffer_.push_back(dest_rect.x);
 	buffer_.push_back(dest_rect.y + dest_rect.h);
+	// texture
 	buffer_.push_back(norm_src.x);
 	buffer_.push_back(norm_src.y + norm_src.h);
 
 	// bot right
 	buffer_.push_back(dest_rect.x + dest_rect.w);
 	buffer_.push_back(dest_rect.y + dest_rect.h);
+	// texture
 	buffer_.push_back(norm_src.x + norm_src.w);
 	buffer_.push_back(norm_src.y + norm_src.h);
 
 	// top right
 	buffer_.push_back(dest_rect.x + dest_rect.w);
 	buffer_.push_back(dest_rect.y);
+	// texture
 	buffer_.push_back(norm_src.x + norm_src.w);
 	buffer_.push_back(norm_src.y);
 
+
+	material.shader.set_vec2f("u_resolution", drawable_struct.size);
+	material.shader.set_float("u_radius", drawable_struct.size.x * 0.0005);
 }
 
 void Component::Renderer::flush()

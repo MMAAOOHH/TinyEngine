@@ -47,7 +47,7 @@ void Window::init(const char* name, GLuint width, GLuint height)
 	// Configure OpenGL
 	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	//glEnable(GL_DEPTH_TEST); Hides my sprite, why?
+	//glEnable(GL_DEPTH_TEST); //Hides my sprite, why?
 
 	// set up alpha channel to display images beneath it.
 	glEnable(GL_BLEND);
@@ -57,6 +57,7 @@ void Window::init(const char* name, GLuint width, GLuint height)
 	glfwSetKeyCallback(window_, Keyboard::key_callback);
 	glfwSetCursorPosCallback(window_, Mouse::cursor_pos_callback);
 	glfwSetScrollCallback(window_, Mouse::mouse_wheel_callback);
+	glfwSetMouseButtonCallback(window_, Mouse::mouse_button_callback);
 
 	glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
 }

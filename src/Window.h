@@ -26,5 +26,5 @@ private:
 
 	const char* name_;
 	GLuint width_, height_;
-	glm::vec3 bg_color_ = { 0.1f,0.1f,0.3f };
+	glm::vec3 bg_color_ = { 0.1f,0.0f,0.1f };
 };

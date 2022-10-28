@@ -15,6 +15,7 @@ namespace Component
 		Texture& texture;
 		Shader& shader;
 		GLuint id;
+		glm::vec3  color = {1,1,1};
 
 		Material(Texture& texture, Shader& shader, GLint tex_unit)
 			: texture(texture), shader(shader), id(id_gen++), tex_unit_(tex_unit)

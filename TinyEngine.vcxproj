@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,8 +157,12 @@
     <None Include="res\Shaders\circle.fs" />
     <None Include="res\Shaders\default.frag" />
     <None Include="res\Shaders\default.vert" />
+    <None Include="res\Shaders\ghost.fs" />
+    <None Include="res\Shaders\newcircle.fs" />
     <None Include="res\Shaders\sprite.fs" />
     <None Include="res\Shaders\sprite.vs" />
+    <None Include="res\Shaders\testing.fs" />
+    <None Include="res\Shaders\wobbler.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\material.h" />
