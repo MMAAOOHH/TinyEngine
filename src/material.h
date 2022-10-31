@@ -25,6 +25,6 @@ namespace Component
 		{}
 
 		void compile(); //setup up shader uniforms
-		void bind(); //setup textures
+		void bind(); //bind textures
 	};
 }

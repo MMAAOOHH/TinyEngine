@@ -1,12 +1,12 @@
 #version 330 core
 
 in vec2 TexCoords;
+
 out vec4 color;
 
 uniform vec2 u_resolution;
 uniform vec3 u_color;
 uniform sampler2D image;
-uniform float u_time;
 
 vec4 circle(vec2 uv)
 {
@@ -18,10 +18,9 @@ vec4 circle(vec2 uv)
 
 void main()
 {
-	vec2 uv = TexCoords.xy / u_resolution.xy;
+	vec2 uv = TexCoords.xy;
     uv -= 0.5;
-    uv.x *= u_resolution.x / u_resolution.y;
- 
-  color = circle(uv)  * vec4(u_color, 1.0) * texture(image, uv) * vec4(uv.x, uv.y, 1.0, 1.0);
+    uv.x *= u_resolution.x / u_resolution.y; 
 
+  color = circle(uv) * vec4(u_color, 1.0) * texture(image, uv);
 }

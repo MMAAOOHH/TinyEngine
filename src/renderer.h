@@ -26,3 +26,14 @@ namespace Component
 		void flush();
 	};
 }
+
+
+class SpriteRenderer
+{
+	GLuint vao_;
+public:
+	SpriteRenderer();
+	~SpriteRenderer();
+
+	void draw(drawable& drawable_struct);
+};

@@ -1,5 +1,13 @@
 #include "renderer.h"
 
+struct vertex
+{
+	float position[3];
+	float color[4];
+	float tex_coords[2];
+	float tex_id;
+};
+
 Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
 	: vbo_(0), vao_(0), current_material_(nullptr), max_sprites_(max_sprites)
 {
@@ -25,7 +33,6 @@ Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites
     }
 }
 
-
 Component::Renderer::~Renderer()
 {
 	if (vbo_)
@@ -49,20 +56,30 @@ void Component::Renderer::end()
 
 void Component::Renderer::draw(drawable& drawable_struct)
 {
+
+	float vertices[] = {
+	0.0f, 1.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 0.0f,
+
+	0.0f, 1.0f, 0.0f, 1.0f,
+	1.0f, 1.0f, 1.0f, 1.0f,
+	1.0f, 0.0f, 1.0f, 0.0f
+	};
+
 	rect dest_rect = { drawable_struct.position.x, drawable_struct.position.y , drawable_struct.size.x, drawable_struct.size.y };
 	// handle texture rect some other way?
 	rect src_rect = { 0,0, drawable_struct.size.x, drawable_struct.size.y };
 	auto material = *drawable_struct.material;
 
-
-	if((this->buffer_.size() >= this->max_sprites_ * 6 * this->attrib_size_ || !current_material_) ||
+	if ((this->buffer_.size() >= this->max_sprites_ * 6 * this->attrib_size_ || !current_material_) ||
 		this->current_material_->id != material.id)
 	{
 		this->flush();
 		this->current_material_ = &material;
 	}
 
-	// translate src to fractions of the image dimensions
+	// translate to fractions of the image dimensions
 	auto norm_src = src_rect;
 	auto img_w = material.texture.width;
 	auto img_h = material.texture.height;
@@ -120,7 +137,7 @@ void Component::Renderer::draw(drawable& drawable_struct)
 
 
 	material.shader.set_vec2f("u_resolution", drawable_struct.size);
-	material.shader.set_float("u_radius", drawable_struct.size.x * 0.0005);
+	//material.shader.set_mat4("u_model", drawable_struct.get_model_transform());
 }
 
 void Component::Renderer::flush()
@@ -135,7 +152,6 @@ void Component::Renderer::flush()
 	}
 
 	this->current_material_->compile();
-
 	this->current_material_->bind();
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * this->buffer_.size(), this->buffer_.data(), GL_STATIC_DRAW);
@@ -145,4 +161,55 @@ void Component::Renderer::flush()
 
 	// clear buffer for next cycle
 	buffer_.clear();
+}
+
+SpriteRenderer::SpriteRenderer()
+{
+	unsigned int vbo;
+	float vertices[] = {
+		// pos      // tex
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 0.0f
+	};
+
+	glGenVertexArrays(1, &this->vao_);
+	glGenBuffers(1, &vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindVertexArray(this->vao_);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+SpriteRenderer::~SpriteRenderer()
+{
+}
+
+void SpriteRenderer::draw(drawable& drawable_struct)
+{
+	auto material = drawable_struct.material;
+	auto shader = material->shader;
+
+	// Shader uniforms
+	shader.use();
+	shader.set_vec3f("u_color", material->color);
+	shader.set_mat4("u_model", drawable_struct.get_model_transform());
+	shader.set_vec2f("u_resolution", drawable_struct.size);
+
+	// Bind texture
+	material->texture.bind();
+
+	// Draw
+	glBindVertexArray(this->vao_);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
 }

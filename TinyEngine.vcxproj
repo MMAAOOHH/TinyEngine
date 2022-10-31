@@ -155,8 +155,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\circle.fs" />
-    <None Include="res\Shaders\default.frag" />
-    <None Include="res\Shaders\default.vert" />
+    <None Include="res\Shaders\default.fs" />
+    <None Include="res\Shaders\default.vs" />
     <None Include="res\Shaders\ghost.fs" />
     <None Include="res\Shaders\newcircle.fs" />
     <None Include="res\Shaders\sprite.fs" />

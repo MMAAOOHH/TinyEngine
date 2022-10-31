@@ -91,7 +91,7 @@ float wobble(float time, float p, float amplitude, float frequence, float speed)
 
 void main()
 {
-    vec2 uv = TexCoords.xy / u_resolution.xy;
+    vec2 uv = TexCoords.xy;
     uv -= .5;
     uv.x *= u_resolution.x/u_resolution.y;
     
