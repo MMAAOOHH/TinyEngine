@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-void Component::Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
+void Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
 {
     // compile debug flags
     GLint success;
@@ -60,7 +60,7 @@ void Component::Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
 
 }
 
-void Component::Shader::load(const GLchar* vs_file_name, const GLchar* fs_file_name)
+void Shader::load(const GLchar* vs_file_name, const GLchar* fs_file_name)
 {
     vs_file_name_ = vs_file_name;
     fs_file_name_ = fs_file_name;
@@ -97,72 +97,72 @@ void Component::Shader::load(const GLchar* vs_file_name, const GLchar* fs_file_n
     compile(vs_code.c_str(), fs_code.c_str());
 }
 
-void Component::Shader::use()
+void Shader::use()
 {
     glUseProgram(id_);
 }
 
-GLint Component::Shader::get_attrib_location(const GLchar* attrib_name)
+GLint Shader::get_attrib_location(const GLchar* attrib_name)
 {
     return glGetAttribLocation(id_, attrib_name);
 }
 
-void Component::Shader::set_bool(const GLchar* name, GLboolean value)
+void Shader::set_bool(const GLchar* name, GLboolean value)
 {
     glUniform1i(glGetUniformLocation(id_, name), value);
 }
 
-void Component::Shader::set_int(const GLchar* name, GLint value)
+void Shader::set_int(const GLchar* name, GLint value)
 {
     glUniform1i(glGetUniformLocation(id_, name), value);
 }
 
-void Component::Shader::set_float(const GLchar* name, GLfloat value)
+void  Shader::set_float(const GLchar* name, GLfloat value)
 {
     glUniform1f(glGetUniformLocation(id_, name), value);
 }
 
-void Component::Shader::set_vec2f(const GLchar* name, const glm::vec2& value)
+void Shader::set_vec2f(const GLchar* name, const glm::vec2& value)
 {
     glUniform2fv(glGetUniformLocation(id_, name), 1, &value[0]);
 }
 
-void Component::Shader::set_vec2f(const GLchar* name, GLfloat x, GLfloat y)
+void Shader::set_vec2f(const GLchar* name, GLfloat x, GLfloat y)
 {
     glUniform2f(glGetUniformLocation(id_, name), x, y);
 }
 
-void Component::Shader::set_vec3f(const GLchar* name, const glm::vec3& value)
+void Shader::set_vec3f(const GLchar* name, const glm::vec3& value)
 {
     glUniform3fv(glGetUniformLocation(id_, name), 1, &value[0]);
 }
 
-void Component::Shader::set_vec3f(const GLchar* name, GLfloat x, GLfloat y, GLfloat z)
+void Shader::set_vec3f(const GLchar* name, GLfloat x, GLfloat y, GLfloat z)
 {
     glUniform3f(glGetUniformLocation(id_, name), x, y, z);
 }
 
-void Component::Shader::set_vec4f(const GLchar* name, const glm::vec4& value)
+void Shader::set_vec4f(const GLchar* name, const glm::vec4& value)
 {
     glUniform4fv(glGetUniformLocation(id_, name), 1, &value[0]);
 }
 
-void Component::Shader::set_vec4f(const GLchar* name, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+void Shader::set_vec4f(const GLchar* name, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
 {
     glUniform4f(glGetUniformLocation(id_, name), x, y, z, w);
 }
 
-void Component::Shader::set_mat2(const GLchar* name, const glm::mat2& matrix)
+void Shader::set_mat2(const GLchar* name, const glm::mat2& matrix)
 {
     glUniformMatrix2fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &matrix[0][0]);
 }
 
-void Component::Shader::set_mat3(const GLchar* name, const glm::mat3& matrix)
+void Shader::set_mat3(const GLchar* name, const glm::mat3& matrix)
 {
     glUniformMatrix3fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &matrix[0][0]);
 }
 
-void Component::Shader::set_mat4(const GLchar* name, const glm::mat4& matrix)
+void Shader::set_mat4(const GLchar* name, const glm::mat4& matrix)
 {
     glUniformMatrix4fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &matrix[0][0]);
 }

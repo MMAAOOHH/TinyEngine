@@ -2,14 +2,12 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-
 Window::Window(const char* name, GLuint width, GLuint height)
-	: name_(name), width_(width), height_(height)
+	: name_(name), width(width), height(height)
 {
-	init(name_, width_, height_);
+	init(name_, width, height);
 }
 
 Window::~Window()
@@ -56,8 +54,8 @@ void Window::init(const char* name, GLuint width, GLuint height)
 	//Bind input callbacks
 	glfwSetKeyCallback(window_, Keyboard::key_callback);
 	glfwSetCursorPosCallback(window_, Mouse::cursor_pos_callback);
-	glfwSetScrollCallback(window_, Mouse::mouse_wheel_callback);
 	glfwSetMouseButtonCallback(window_, Mouse::mouse_button_callback);
+	glfwSetScrollCallback(window_, Mouse::mouse_wheel_callback);
 
 	glfwSetFramebufferSizeCallback(window_, framebuffer_size_callback);
 }

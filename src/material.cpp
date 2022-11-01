@@ -1,8 +1,8 @@
 #include "material.h"
 
-GLuint Component::Material::id_gen = 0;
+GLuint Material::id_gen = 0;
 
-void Component::Material::compile()
+void Material::compile()
 {
 	shader.use();
 	shader.set_int("image", tex_unit_);
@@ -10,7 +10,7 @@ void Component::Material::compile()
 	
 }
 
-void Component::Material::bind()
+void Material::bind()
 {
 	glActiveTexture(GL_TEXTURE0 + tex_unit_);
 	texture.bind();

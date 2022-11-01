@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-Component::Texture::Texture(GLuint internal_format, GLuint image_format, GLuint wrap_s, GLuint wrap_t,
+Texture::Texture(GLuint internal_format, GLuint image_format, GLuint wrap_s, GLuint wrap_t,
                             GLuint filter_min, GLuint filter_mag)
 	: width(0), height(0), internal_format(internal_format), image_format(image_format), wrap_s(wrap_s), wrap_t(wrap_t),
 	  filter_min(filter_min),
@@ -14,22 +14,22 @@ Component::Texture::Texture(GLuint internal_format, GLuint image_format, GLuint 
 	glGenTextures(1, &id_);
 }
 
-Component::Texture::Texture(GLuint format)
+Texture::Texture(GLuint format)
 	: Texture(format, format, GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST)
 {
 }
 
-Component::Texture::Texture()
+Texture::Texture()
 	: Texture(GL_RGBA, GL_RGBA, GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST)
 {
 }
 
-Component::Texture::~Texture()
+Texture::~Texture()
 {
 	glDeleteTextures(1, &id_);
 }
 
-void Component::Texture::load(const GLchar* tex_file_name)
+void Texture::load(const GLchar* tex_file_name)
 {
 	// Load image
 	int width, height, nr_channels;
@@ -66,9 +66,8 @@ void Component::Texture::load(const GLchar* tex_file_name)
 	stbi_image_free(image);
 }
 
-void Component::Texture::bind()
+void Texture::bind()
 {
 	// activate tex slot then bind the texture to active tex slot
-
 	glBindTexture(GL_TEXTURE_2D, id_);
 }

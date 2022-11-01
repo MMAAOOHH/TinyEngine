@@ -17,6 +17,7 @@ public:
 	void process_events();
 	bool is_open();
 
+	GLuint width, height;
 private:
 
 	void init(const char* name, GLuint width, GLuint height);
@@ -25,6 +26,5 @@ private:
 	std::bitset<8> buttons_;
 
 	const char* name_;
-	GLuint width_, height_;
 	glm::vec3 bg_color_ = { 0.1f,0.0f,0.1f };
 };

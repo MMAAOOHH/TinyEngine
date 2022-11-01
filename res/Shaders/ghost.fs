@@ -95,7 +95,7 @@ void main()
     uv -= .5;
     uv.x *= u_resolution.x/u_resolution.y;
     
-    vec2 uvscreen = TexCoords / u_screenResolution;
+    vec2 uvscreen = TexCoords / u_screenResolution.xy;
     vec2 mouse = u_mousePos.xy / u_screenResolution.xy;
     mouse -= .5;
     
@@ -106,7 +106,7 @@ void main()
     //Wobble
     float t = u_time;
     float a = 0.01;
-	float f = 30.0;
+	float f = 60.0;
 	float s = 4.0;
 
     uv.x += wobble(t, uvscreen.x, a, f, s);

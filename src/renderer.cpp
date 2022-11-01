@@ -1,14 +1,6 @@
 #include "renderer.h"
 
-struct vertex
-{
-	float position[3];
-	float color[4];
-	float tex_coords[2];
-	float tex_id;
-};
-
-Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
+Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
 	: vbo_(0), vao_(0), current_material_(nullptr), max_sprites_(max_sprites)
 {
 	attrib_size_ = 0;
@@ -33,7 +25,7 @@ Component::Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites
     }
 }
 
-Component::Renderer::~Renderer()
+Renderer::~Renderer()
 {
 	if (vbo_)
         glDeleteBuffers(1, &vbo_);
@@ -44,29 +36,18 @@ Component::Renderer::~Renderer()
     vao_ = 0;
 }
 
-void Component::Renderer::begin()
+void Renderer::begin()
 {
 	current_material_ = nullptr;
 }
 
-void Component::Renderer::end()
+void Renderer::end()
 {
 	flush();
 }
 
-void Component::Renderer::draw(drawable& drawable_struct)
+void Renderer::draw(drawable& drawable_struct)
 {
-
-	float vertices[] = {
-	0.0f, 1.0f, 0.0f, 1.0f,
-	1.0f, 0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f, 0.0f, 0.0f,
-
-	0.0f, 1.0f, 0.0f, 1.0f,
-	1.0f, 1.0f, 1.0f, 1.0f,
-	1.0f, 0.0f, 1.0f, 0.0f
-	};
-
 	rect dest_rect = { drawable_struct.position.x, drawable_struct.position.y , drawable_struct.size.x, drawable_struct.size.y };
 	// handle texture rect some other way?
 	rect src_rect = { 0,0, drawable_struct.size.x, drawable_struct.size.y };
@@ -140,7 +121,7 @@ void Component::Renderer::draw(drawable& drawable_struct)
 	//material.shader.set_mat4("u_model", drawable_struct.get_model_transform());
 }
 
-void Component::Renderer::flush()
+void Renderer::flush()
 {
 	if (this->buffer_.empty()) 
 		return;
@@ -167,7 +148,7 @@ SpriteRenderer::SpriteRenderer()
 {
 	unsigned int vbo;
 	float vertices[] = {
-		// pos      // tex
+		// position // texture coord
 		0.0f, 1.0f, 0.0f, 1.0f,
 		1.0f, 0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 0.0f,
@@ -190,10 +171,6 @@ SpriteRenderer::SpriteRenderer()
 	glBindVertexArray(0);
 }
 
-SpriteRenderer::~SpriteRenderer()
-{
-}
-
 void SpriteRenderer::draw(drawable& drawable_struct)
 {
 	auto material = drawable_struct.material;
@@ -203,9 +180,9 @@ void SpriteRenderer::draw(drawable& drawable_struct)
 	shader.use();
 	shader.set_vec3f("u_color", material->color);
 	shader.set_mat4("u_model", drawable_struct.get_model_transform());
+	shader.set_mat4("u_view", drawable_struct.camera->transform_view());
 	shader.set_vec2f("u_resolution", drawable_struct.size);
 
-	// Bind texture
 	material->texture.bind();
 
 	// Draw

@@ -4,27 +4,24 @@
 #include "shader.h"
 #include "texture.h"
 
-namespace Component
+class Material
 {
-	class Material
-	{
-		static GLuint id_gen;
-		GLuint tex_unit_;
+	static GLuint id_gen;
+	GLuint tex_unit_;
 
-	public:
-		Texture& texture;
-		Shader& shader;
-		GLuint id;
-		glm::vec3  color = {1,1,1};
+public:
+	Texture& texture;
+	Shader& shader;
+	GLuint id;
+	glm::vec3  color = {1,1,1};
 
-		Material(Texture& texture, Shader& shader, GLint tex_unit)
-			: texture(texture), shader(shader), id(id_gen++), tex_unit_(tex_unit)
-		{}
+	Material(Texture& texture, Shader& shader, GLint tex_unit)
+		: texture(texture), shader(shader), id(id_gen++), tex_unit_(tex_unit)
+	{}
 
-		~Material()
-		{}
+	~Material()
+	{}
 
-		void compile(); //setup up shader uniforms
-		void bind(); //bind textures
-	};
-}
+	void compile(); //setup up shader uniforms
+	void bind(); //bind textures
+};
