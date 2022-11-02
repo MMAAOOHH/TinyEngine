@@ -145,6 +145,7 @@ void Renderer::flush()
 }
 
 SpriteRenderer::SpriteRenderer()
+	:	vao_(0)
 {
 	unsigned int vbo;
 	float vertices[] = {
@@ -184,7 +185,6 @@ void SpriteRenderer::draw(drawable& drawable_struct)
 	shader.set_vec2f("u_resolution", drawable_struct.size);
 
 	material->texture.bind();
-
 	// Draw
 	glBindVertexArray(this->vao_);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

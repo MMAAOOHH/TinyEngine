@@ -22,6 +22,9 @@ public:
 	static bool button_up(int button);
 	static bool button_down(int button);
 
+	static double mouse_x;
+	static double mouse_y;
+
 private:
 	static double mouse_x_;
 	static double mouse_y_;

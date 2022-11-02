@@ -3,6 +3,9 @@
 
 double Mouse::mouse_x_;
 double Mouse::mouse_y_;
+double Mouse::mouse_x;
+double Mouse::mouse_y;
+
 
 double Mouse::last_x_;
 double Mouse::last_y_;
@@ -23,6 +26,8 @@ void Mouse::cursor_pos_callback(GLFWwindow* window, double pos_x, double pos_y)
 {
 	mouse_x_ = pos_x;
 	mouse_y_ = pos_y;
+	mouse_x = pos_x;
+	mouse_y = pos_y;
 
 	if(first_mouse)
 	{
