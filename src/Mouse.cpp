@@ -31,7 +31,7 @@ void Mouse::cursor_pos_callback(GLFWwindow* window, double pos_x, double pos_y)
 		first_mouse = false;
 	}
 
-	mouse_dx_ = last_x_;
+	mouse_dx_ = last_x_ - pos_x;
 	mouse_dy_ = last_y_ - pos_y;
 	last_x_ = pos_x;
 	last_y_ = pos_y;
@@ -79,7 +79,7 @@ double Mouse::get_mouse_dx()
 
 double Mouse::get_mouse_dy()
 {
-	double dy = mouse_dx_;
+	double dy = mouse_dy_;
 	mouse_dy_ = 0;
 	return dy;
 }

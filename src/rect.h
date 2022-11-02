@@ -10,19 +10,13 @@ struct rect
 
 struct drawable
 {
-    enum type
-    {
-	    quad,
-        line
-    };
+
     enum transform_pivot
     {
 	    centered,
     };
 
-    type type = quad;
     transform_pivot pivot = centered;
-
     glm::vec2 position = glm::vec2(0.0f);
     GLfloat rotation = 0.0f;
     glm::vec2 size = glm::vec2(64.0f);

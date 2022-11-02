@@ -7,8 +7,9 @@ struct camera
 	glm::vec2 position = glm::vec2(0.0f);
 	glm::vec2 view_size = glm::vec2(800, 800);
 	glm::vec2 offset = glm::vec2(0.5);
-	float zoom = 1.0f;
-	float zoom_sensitivity = 5.0f;
+	GLfloat zoom = 1.0f;
+	GLfloat zoom_sensitivity = 15.f;
+	GLfloat pan_speed = 50.0f;
 
 	glm::mat4 get_orthographic_projection()
 	{

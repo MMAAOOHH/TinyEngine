@@ -41,7 +41,7 @@ vec4 Eye(vec2 uv, float side, vec2 m)
 	float d = length(uv);
     
     vec4 col = vec4(0);
-    col.a = S(0.5, 0.2, d);									// eye mask
+    col.a = S(0.5, 0.1, d);									// eye mask
     
     d = length(uv-m*.45);									// offset pupile to look at mouse cursor
     

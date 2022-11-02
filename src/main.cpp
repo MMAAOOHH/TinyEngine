@@ -17,13 +17,24 @@ const GLuint SCR_WIDTH  = 1080;
 const GLuint SCR_HEIGHT = 1080;
 const char* NAME = "TinyEngine";
 
+glm::vec2 lerp(glm::vec2 a, glm::vec2 b, GLfloat t)
+{
+    return a + t * (b - a);
+}
+
+GLfloat lerp(GLfloat a, GLfloat b, GLfloat t)
+{
+    return a + t * (b - a);
+}
+
+
+
 int main()
 {
     Window window(NAME, SCR_WIDTH, SCR_HEIGHT);
 	camera camera;
     camera.view_size = { SCR_WIDTH , SCR_HEIGHT };
     
-
 
 	auto vs_file_name = "res/Shaders/sprite.vs";
 	auto fs_file_name = "res/Shaders/ghost.fs";
@@ -65,12 +76,14 @@ int main()
     b.material = a.material;
     c.material = a.material;
 
-    a.size = glm::vec2(100, 100);
+    a.size = glm::vec2(400 , 400);
     b.size = glm::vec2(30);
     c.size = glm::vec2(50);
 
     GLfloat old_time = 0;
     GLfloat speed = 2.f;
+
+    a.position = { 0, 0 };
 
     while (window.is_open())
     {
@@ -81,35 +94,17 @@ int main()
         GLfloat delta_time = time - old_time;
         old_time = time;
 
+
+
         // Camera transform
-        if (Mouse::button(0))
-        {
-            camera.zoom += camera.zoom_sensitivity * delta_time;
-        }
-        if (Mouse::button(1))
-        {
-            camera.zoom -= camera.zoom_sensitivity * delta_time;
-        }
-
-
-
+    	camera.zoom = lerp(camera.zoom, camera.zoom + static_cast<GLfloat>(Mouse::get_scroll_dy()), camera.zoom_sensitivity * delta_time);
+        if(Mouse::button(1))
+            camera.position += glm::vec2(Mouse::get_mouse_dx(), Mouse::get_mouse_dy());
 
         material.shader.set_float("u_time", time);
         material.shader.set_vec2f("u_mousePos", { Mouse::get_mouse_x(), Mouse::get_mouse_y()});
 
-        /*
-    	a.position = glm::vec2(
-            std::lerp(a.position.x, (float)Mouse::get_mouse_x(), delta_time * speed),
-            std::lerp(a.position.y, (float)Mouse::get_mouse_y(), delta_time * speed));
-
-		*/
-		
-        b.position = glm::vec2(std::lerp(b.position.x, a.position.x, delta_time * speed), std::lerp(b.position.y, a.position.y, delta_time * speed));
-
-      
-
-
-
+        // draw
     	for (auto& entry : drawables)
             renderer->draw(*entry);
 
