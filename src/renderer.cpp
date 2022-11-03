@@ -148,7 +148,7 @@ SpriteRenderer::SpriteRenderer()
 	:	vao_(0)
 {
 	unsigned int vbo;
-	float vertices[] = {
+	GLfloat vertices[] = {
 		// position // texture coord
 		0.0f, 1.0f, 0.0f, 1.0f,
 		1.0f, 0.0f, 1.0f, 0.0f,
@@ -167,26 +167,35 @@ SpriteRenderer::SpriteRenderer()
 
 	glBindVertexArray(this->vao_);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)nullptr);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_ALWAYS);
+	
 }
 
 void SpriteRenderer::draw(drawable& drawable_struct)
 {
-	auto material = drawable_struct.material;
-	auto shader = material->shader;
+	Material* material = drawable_struct.material;
+	Shader& shader = material->shader;
 
-	// Shader uniforms
+	material->bind();
+	std::cout << glGetError() << std::endl;
 	shader.use();
+	std::cout << glGetError() << std::endl;
 	shader.set_vec3f("u_color", material->color);
 	shader.set_mat4("u_model", drawable_struct.get_model_transform());
 	shader.set_mat4("u_view", drawable_struct.camera->transform_view());
 	shader.set_vec2f("u_resolution", drawable_struct.size);
 
-	material->texture.bind();
-	// Draw
 	glBindVertexArray(this->vao_);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
+	//glUseProgram(0);
 }

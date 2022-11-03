@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 
+
 void Shader::compile(const GLchar* vs_data, const GLchar* fs_data)
 {
     // compile debug flags

@@ -31,6 +31,7 @@ struct drawable
     glm::vec2 position = glm::vec2(0.0f);
     GLfloat rotation = 0.0f;
     glm::vec2 size = glm::vec2(64.0f);
+
     Material* material;
     camera* camera;
 
@@ -67,7 +68,7 @@ struct line : drawable
 {
     glm::vec2 start;
     glm::vec2 end;
-    GLfloat thickness = 20.0f;
+    GLfloat thickness = 25.0f;
 
     line(glm::vec2 start, glm::vec2 end) : start(start), end(end)
     {
@@ -83,7 +84,6 @@ struct line : drawable
         size.x = calculate_distance(start, end);
         GLfloat angle = atan2(start.y, start.x) - atan2(end.y, end.x);
 
-        std::cout << angle << std::endl;
 
         rotation = angle;
 

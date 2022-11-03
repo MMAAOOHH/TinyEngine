@@ -48,8 +48,11 @@ void Window::init(const char* name, GLuint width, GLuint height)
 	//glEnable(GL_DEPTH_TEST); //Hides my sprite, why?
 
 	// set up alpha channel to display images beneath it.
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glEnable(GL_MULTISAMPLE);
 
 	//Bind input callbacks
 	glfwSetKeyCallback(window_, Keyboard::key_callback);

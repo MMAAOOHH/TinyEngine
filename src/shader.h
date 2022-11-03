@@ -9,12 +9,12 @@
 
 class Shader
 {
-	GLuint id_;
 	std::string vs_file_name_, fs_file_name_;
 
 	void compile(const GLchar* vs_data, const GLchar* fs_data);
 
 public:
+	GLuint id_;
 	Shader()
 		: id_(0)
 	{}

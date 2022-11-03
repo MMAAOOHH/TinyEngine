@@ -27,4 +27,3 @@ public:
 	void load(const GLchar* tex_file_name);
 	void bind();
 };
-
