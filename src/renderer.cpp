@@ -48,10 +48,11 @@ void Renderer::end()
 
 void Renderer::draw(drawable& drawable_struct)
 {
+	/*
 	rect dest_rect = { drawable_struct.position.x, drawable_struct.position.y , drawable_struct.size.x, drawable_struct.size.y };
 	// handle texture rect some other way?
 	rect src_rect = { 0,0, drawable_struct.size.x, drawable_struct.size.y };
-	auto material = *drawable_struct.material;
+	auto& material = drawable_struct.material;
 
 	if ((this->buffer_.size() >= this->max_sprites_ * 6 * this->attrib_size_ || !current_material_) ||
 		this->current_material_->id != material.id)
@@ -119,6 +120,7 @@ void Renderer::draw(drawable& drawable_struct)
 
 	material.shader.set_vec2f("u_resolution", drawable_struct.size);
 	//material.shader.set_mat4("u_model", drawable_struct.get_model_transform());
+	*/
 }
 
 void Renderer::flush()
@@ -180,22 +182,25 @@ SpriteRenderer::SpriteRenderer()
 	
 }
 
-void SpriteRenderer::draw(drawable& drawable_struct)
+SpriteRenderer::~SpriteRenderer()
+{
+	//todo: delete vao_
+}
+
+// const
+void SpriteRenderer::draw(const drawable& drawable_struct, const glm::mat4& view)
 {
 	Material* material = drawable_struct.material;
-	Shader& shader = material->shader;
+	Shader* shader = material->shader;
 
+	shader->use();
+	shader->set_vec3f("u_color", material->color);
+	shader->set_mat4("u_model", drawable_struct.get_model_transform());
+	shader->set_mat4("u_view", view);
+	shader->set_vec2f("u_resolution", drawable_struct.size);
 	material->bind();
-	std::cout << glGetError() << std::endl;
-	shader.use();
-	std::cout << glGetError() << std::endl;
-	shader.set_vec3f("u_color", material->color);
-	shader.set_mat4("u_model", drawable_struct.get_model_transform());
-	shader.set_mat4("u_view", drawable_struct.camera->transform_view());
-	shader.set_vec2f("u_resolution", drawable_struct.size);
 
 	glBindVertexArray(this->vao_);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
-	//glUseProgram(0);
 }

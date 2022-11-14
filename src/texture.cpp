@@ -42,7 +42,7 @@ void Texture::load(const GLchar* tex_file_name)
 		throw;
 	}
 
-	// set dimensions
+	// Set dimensions
 	this->width = width;
 	this->height = height;
 

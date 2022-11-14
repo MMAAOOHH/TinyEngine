@@ -143,11 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\resource_manager.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\Mouse.cpp" />
@@ -165,12 +167,16 @@
     <None Include="res\Shaders\wobbler.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\game_object.h" />
     <ClInclude Include="src\material.h" />
     <ClInclude Include="src\Keyboard.h" />
+    <ClInclude Include="src\math.h" />
     <ClInclude Include="src\Mouse.h" />
     <ClInclude Include="src\rect.h" />
     <ClInclude Include="src\renderer.h" />
+    <ClInclude Include="src\resource_manager.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\texture.h" />

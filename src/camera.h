@@ -1,8 +1,10 @@
+#pragma once
+
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-struct camera
+struct Camera
 {
 	glm::vec2 position = glm::vec2(0.0f);
 	glm::vec2 view_size = glm::vec2(800, 800);

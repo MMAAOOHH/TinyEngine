@@ -31,5 +31,5 @@ public:
 	SpriteRenderer();
 	~SpriteRenderer();
 
-	void draw(drawable& drawable_struct);
+	void draw(const drawable& drawable_struct, const glm::mat4& view);
 };
