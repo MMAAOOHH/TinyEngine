@@ -6,11 +6,6 @@
 #include "material.h"
 #include "math.h"
 
-struct rect
-{
-    GLfloat x, y, w, h;
-};
-
 struct drawable
 {
     enum transform_origin
@@ -53,11 +48,6 @@ struct drawable
 
         return model;
     }
-
-    virtual void update(GLfloat dt)
-    {
-       
-    }
 };
 
 struct line : drawable
@@ -75,7 +65,7 @@ struct line : drawable
         size.y = thickness;
     }
 
-	void update(GLfloat dt) override
+	void update(GLfloat dt) 
     {
         size.x = calculate_distance(start, end);
         GLfloat angle = atan2(start.y, start.x) - atan2(end.y, end.x);
@@ -83,3 +73,7 @@ struct line : drawable
     }
 };
 
+struct rect
+{
+    GLfloat x, y, w, h;
+};

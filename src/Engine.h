@@ -14,8 +14,7 @@ struct Engine
 	std::unique_ptr <SpriteRenderer> renderer;
 	std::unique_ptr <Camera> camera;
 
-	//unique ptr, shared ptr
-	// array of shaders, array of textures
+	//research unique ptr, shared ptr
 	Shader* quad_shader;
 	Shader* circ_shader;
 	Material* quad_mat;
@@ -25,7 +24,6 @@ struct Engine
 	GLfloat delta_time;
 
 	void init();
-	void start();
 	void handle_input();
 	void update();
 	void render();
@@ -67,16 +65,14 @@ struct Prototype : Game
 	}
 	void start() override
 	{
-		auto a = std::make_shared<GameObject>();
+		// create circle
+		auto circle = std::make_shared<GameObject>();
 		auto drawable = std::make_shared<struct drawable>();
 		drawable->material = engine->circ_mat;
+		drawable->material->color = { 1,0,0 };
+		circle->drawables.push_back(drawable);
+		engine->add_game_object(circle);
 
-		a->drawables.push_back(drawable);
-
-		engine->add_game_object(a);
 	}
-	void update(GLfloat dt) override
-	{
-		
-	}
+	void update(GLfloat dt) override{}
 };

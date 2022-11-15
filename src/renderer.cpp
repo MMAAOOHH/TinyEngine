@@ -1,5 +1,68 @@
 #include "renderer.h"
 
+
+SpriteRenderer::SpriteRenderer()
+	: vao_(0)
+{
+	unsigned int vbo;
+	GLfloat vertices[] = {
+		// position // texture coord
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 0.0f
+	};
+
+	glGenVertexArrays(1, &this->vao_);
+	glGenBuffers(1, &vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindVertexArray(this->vao_);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)nullptr);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_ALWAYS);
+
+}
+
+SpriteRenderer::~SpriteRenderer()
+{
+	//todo: delete vao_
+}
+
+// const
+void SpriteRenderer::draw(const drawable& drawable_struct, const glm::mat4& view)
+{
+	Material* material = drawable_struct.material;
+	Shader* shader = material->shader;
+
+	shader->use();
+	shader->set_vec3f("u_color", material->color);
+	shader->set_mat4("u_model", drawable_struct.get_model_transform());
+	shader->set_mat4("u_view", view);
+	shader->set_vec2f("u_resolution", drawable_struct.size);
+	material->bind();
+
+	glBindVertexArray(this->vao_);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+}
+
+
+
+
 Renderer::Renderer(std::vector<GLuint> attributes, GLuint max_sprites)
 	: vbo_(0), vao_(0), current_material_(nullptr), max_sprites_(max_sprites)
 {
@@ -144,63 +207,4 @@ void Renderer::flush()
 
 	// clear buffer for next cycle
 	buffer_.clear();
-}
-
-SpriteRenderer::SpriteRenderer()
-	:	vao_(0)
-{
-	unsigned int vbo;
-	GLfloat vertices[] = {
-		// position // texture coord
-		0.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
-
-		0.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 0.0f
-	};
-
-	glGenVertexArrays(1, &this->vao_);
-	glGenBuffers(1, &vbo);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindVertexArray(this->vao_);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)nullptr);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_ALWAYS);
-	
-}
-
-SpriteRenderer::~SpriteRenderer()
-{
-	//todo: delete vao_
-}
-
-// const
-void SpriteRenderer::draw(const drawable& drawable_struct, const glm::mat4& view)
-{
-	Material* material = drawable_struct.material;
-	Shader* shader = material->shader;
-
-	shader->use();
-	shader->set_vec3f("u_color", material->color);
-	shader->set_mat4("u_model", drawable_struct.get_model_transform());
-	shader->set_mat4("u_view", view);
-	shader->set_vec2f("u_resolution", drawable_struct.size);
-	material->bind();
-
-	glBindVertexArray(this->vao_);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindVertexArray(0);
 }

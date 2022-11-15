@@ -1,6 +1,5 @@
-#include <glad/glad.h>
 #include "Engine.h"
-
+ 
 const GLuint SCR_WIDTH  = 1080;
 const GLuint SCR_HEIGHT = 1080;
 

@@ -56,20 +56,9 @@ void Engine::init()
 }
 
 
-void Engine::start()
-{
-
-}
-
 void Engine::handle_input()
 {
 	window->process_events();
-	
-	// Camera Zoom
-	camera->zoom = lerp(camera->zoom, camera->zoom + static_cast<GLfloat>(Mouse::get_scroll_dy()), camera->zoom_sensitivity * delta_time);
-	// Camera Pan
-	if (Mouse::button(1))
-		camera->position += glm::vec2(Mouse::get_mouse_dx(), Mouse::get_mouse_dy());
 }
 
 double old_time = 0;
@@ -80,6 +69,14 @@ void Engine::update()
 	delta_time = static_cast<GLfloat>(time - old_time);
 	old_time = time;
 
+	// update camera
+	// Zoom
+	camera->zoom = lerp(camera->zoom, camera->zoom + static_cast<GLfloat>(Mouse::get_scroll_dy()), camera->zoom_sensitivity * delta_time);
+	//  Pan
+	if (Mouse::button(1))
+		camera->position += glm::vec2(Mouse::get_mouse_dx(), Mouse::get_mouse_dy());
+
+	// Update objects
 	for (auto& entry : objects)
 		entry->update(delta_time);
 }
@@ -102,5 +99,5 @@ void Engine::add_game_object(const std::shared_ptr<GameObject>& go)
 
 void Engine::remove_game_object(const std::shared_ptr<GameObject>& go)
 {
-	
+	// Todo: move to back and pop from list ?
 }
