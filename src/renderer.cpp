@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#include "Mouse.h"
+
 
 SpriteRenderer::SpriteRenderer()
 	: vao_(0)
@@ -43,16 +45,17 @@ SpriteRenderer::~SpriteRenderer()
 }
 
 // const
-void SpriteRenderer::draw(const drawable& drawable_struct, const glm::mat4& view)
+// const material&, const glm::mat4& model, const glm::mat4& view
+void SpriteRenderer::draw(const drawable& drawable, const glm::mat4& view)
 {
-	Material* material = drawable_struct.material;
+	Material* material = drawable.material;
 	Shader* shader = material->shader;
 
 	shader->use();
 	shader->set_vec3f("u_color", material->color);
-	shader->set_mat4("u_model", drawable_struct.get_model_transform());
+	shader->set_mat4("u_model", drawable.get_model_transform());
 	shader->set_mat4("u_view", view);
-	shader->set_vec2f("u_resolution", drawable_struct.size);
+	shader->set_vec2f("u_resolution", drawable.size);
 	material->bind();
 
 	glBindVertexArray(this->vao_);

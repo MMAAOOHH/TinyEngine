@@ -28,6 +28,7 @@ void Engine::init()
 	auto vs_file_name = "res/Shaders/sprite.vs";
 	auto quad_fs_file_name = "res/Shaders/sprite.fs";
 	auto circ_fs_file_name = "res/Shaders/circle.fs";
+	auto ghost_fs_file_name = "res/Shaders/wobbler.fs";
 
 	quad_shader = new Shader();
 	quad_shader->load(vs_file_name, quad_fs_file_name);
@@ -35,7 +36,9 @@ void Engine::init()
 	circ_shader = new Shader();
 	circ_shader->load(vs_file_name, circ_fs_file_name);
 
-	
+	ghost_shader = new Shader();
+	ghost_shader->load(vs_file_name, ghost_fs_file_name);
+
 	auto projection = camera->get_orthographic_projection();
 
 	quad_shader->use();
@@ -44,15 +47,21 @@ void Engine::init()
 	circ_shader->use();
 	circ_shader->set_mat4("u_projection", projection);
 
-	// Texture
-	auto tex_file_name = "res/Images/white.png";
-	texture = new Texture();
-	texture->load(tex_file_name);
+	ghost_shader->use();
+	circ_shader->set_mat4("u_projection", projection);
+	circ_shader->set_vec2f("u_screenResolution", (float)width, (float)height);
+
+	// Texture white
+	texture_a = new Texture();
+	texture_a->load("res/Images/white.png");
+	// Texture png
+	texture_b = new Texture();
+	texture_b->load("res/Images/beyer.jpg");
 
 	// Materials
-	quad_mat = new Material(texture, quad_shader, 0);
-	circ_mat = new Material(texture, circ_shader, 0);
-
+	quad_mat = new Material(texture_b, quad_shader, 0);
+	circ_mat = new Material(texture_a, circ_shader, 0);
+	ghost_mat = new Material(texture_a, ghost_shader, 0);
 }
 
 

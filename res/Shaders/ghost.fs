@@ -100,17 +100,20 @@ void main()
     mouse -= .5;
     
     // Eyepos 
+    /*
     float d = dot(uv, uv);
     uv -= mouse*sat(.15-d);
-    
+    */
     //Wobble
+    /*
     float t = u_time;
     float a = 0.01;
-	float f = 60.0;
+	float f = 0.5;
 	float s = 4.0;
 
     uv.x += wobble(t, uvscreen.x, a, f, s);
     uv.y += wobble(t, uvscreen.y, a, f, s);
+    */
     // out    
-	color = Ghost(uv, mouse) * texture(image, uv) * vec4(u_color, 1.0) * vec4(uv.x, uv.y, 1.0, 1.0);
+	color = Head(uv) * vec4(u_color, 1.0);
 }

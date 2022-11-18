@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game_object.h"
+#include "Mouse.h"
 #include "Window.h"
 #include "renderer.h"
 
@@ -17,9 +18,14 @@ struct Engine
 	//research unique ptr, shared ptr
 	Shader* quad_shader;
 	Shader* circ_shader;
+	Shader* ghost_shader;
+
 	Material* quad_mat;
 	Material* circ_mat;
-	Texture* texture;
+	Material* ghost_mat;
+
+	Texture* texture_a;
+	Texture* texture_b;
 
 	GLfloat delta_time;
 
@@ -65,14 +71,21 @@ struct Prototype : Game
 	}
 	void start() override
 	{
-		// create circle
-		auto circle = std::make_shared<GameObject>();
-		auto drawable = std::make_shared<struct drawable>();
-		drawable->material = engine->circ_mat;
-		drawable->material->color = { 1,0,0 };
-		circle->drawables.push_back(drawable);
-		engine->add_game_object(circle);
+		auto go = std::make_shared<GameObject>();
+		engine->add_game_object(go);
 
+		auto circle = std::make_shared<struct drawable>();
+		circle->material = engine->circ_mat;
+		circle->material->color = { 1,0,0 };
+		go->drawables.push_back(circle);
+
+		auto quad = std::make_shared<struct drawable>();
+		quad->material = engine->quad_mat;
+		quad->material->color = { 0,1,1 };
+		go->drawables.push_back(quad);
+
+		quad->position.x = circle->position.x - 100;
 	}
+	// 
 	void update(GLfloat dt) override{}
 };

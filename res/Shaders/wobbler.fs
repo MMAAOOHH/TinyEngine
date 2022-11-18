@@ -1,22 +1,23 @@
 #version 330 core
 
-
 in vec2 TexCoords;
 in vec2 f_Position;
 
 out vec4 color;
 
 uniform vec2 u_resolution;
-uniform float u_radius;
 uniform vec3 u_color;
 uniform sampler2D image;
 uniform float u_time;
 uniform vec2 u_screenResolution;
 
 
-float circle(vec2 uv, float radius)
+vec4 circle(vec2 uv)
 {
-  return 1 - step(radius, length(uv - vec2(0.5)));
+    vec4 col = vec4(1);
+    float d = length(uv);
+    col.a = smoothstep(0.5, 0.49, d);
+    return col;
 }
 
 float wobble(float time, float p, float amplitude, float frequence, float speed)
@@ -26,24 +27,21 @@ float wobble(float time, float p, float amplitude, float frequence, float speed)
 
 void main()
 {
-  vec2 uv = TexCoords.xy / u_resolution.xy;
-  vec2 uvscreen = TexCoords / u_screenResolution;
 
+  vec2 uv = TexCoords.xy;
+  uv -= 0.5;
+  uv.x *= u_resolution.x / u_resolution.y; 
+
+  vec2 uvscreen = TexCoords;
   // Wobble
   float t = u_time;
-  float a = 0.009;
-  float f = 50.0;
+  float a = 0.01;
+  float f = 0.5;
   float s = 6.0;
 
   uv.x += wobble(t, uvscreen.x, a, f, s);
   uv.y += wobble(t, uvscreen.y, a, f, s);
 
-  // Circle
-  vec3 col = vec3(0);
-  float c = circle(uv, u_radius);
-  col = vec3(c);
- 
-  color = vec4(col, 1.0)  * vec4(u_color, 1.0);
-  if(color.rgb == vec3(0)) discard;
+  color = circle(uv) * vec4(u_color, 1.0) * texture(image, uv);
 
 }
